@@ -28,11 +28,12 @@ class LaunchRequestHandler(AbstractRequestHandler):
     de handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Welcome, wich index you wanna know?"
+        speak_reprompt = "i have informations about dolar and euro"
 
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                .ask(speak_output)
+                .ask(speak_reprompt)
                 .response
         )
 

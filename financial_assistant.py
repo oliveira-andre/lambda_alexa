@@ -7,6 +7,7 @@
 import logging
 import ask_sdk_core.utils as ask_utils
 
+import yfinance as yf
 from ask_sdk_core.skill_builder import SkillBuilder
 from ask_sdk_core.dispatch_components import AbstractRequestHandler
 from ask_sdk_core.dispatch_components import AbstractExceptionHandler
@@ -63,7 +64,9 @@ class AskIndexIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         quotation_index = handler_input.request_envelope.request.intent.slots["quotation"].value
-        speak_output = "The value of "+ quotation_index +" is 4 real"
+        quotation_symbol = "EURBRL=X" if quotation_index == "euro" else "USDBRL=X"
+        result = yf.Ticker(quotation_symbol).info['regularMartketPrice']
+        speak_output = "The value of "+ quotation_index +" is "+ result +" real"
 
         return (
             handler_input.response_builder

@@ -25,7 +25,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
-    de handle(self, handler_input):
+    def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Welcome, wich index you wanna know?"
         speak_reprompt = "i have informations about dolar and euro"
@@ -38,15 +38,32 @@ class LaunchRequestHandler(AbstractRequestHandler):
         )
 
 
-class HelloWorldIntentHandler(AbstractRequestHandler):
-    """Handler for Hello World Intent."""
+# class HelloWorldIntentHandler(AbstractRequestHandler):
+    # """Handler for Hello World Intent."""
+    # def can_handle(self, handler_input):
+        # # type: (HandlerInput) -> bool
+        # return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
+
+    # def handle(self, handler_input):
+        # # type: (HandlerInput) -> Response
+        # speak_output = "Hello World!"
+
+        # return (
+            # handler_input.response_builder
+                # .speak(speak_output)
+                # # .ask("add a reprompt if you want to keep the session open for the user to respond")
+                # .response
+        # )
+
+class AskIndexIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
+        return ask_utils.is_intent_name("AskIndex")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Hello World!"
+        quotation_index = handler_input.request_envelope.request.intent.slots["quotation"].value
+        speak_output = "The value of "+ quotation_index +" is 4 real"
 
         return (
             handler_input.response_builder

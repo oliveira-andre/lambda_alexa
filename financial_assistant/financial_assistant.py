@@ -39,23 +39,6 @@ class LaunchRequestHandler(AbstractRequestHandler):
         )
 
 
-# class HelloWorldIntentHandler(AbstractRequestHandler):
-    # """Handler for Hello World Intent."""
-    # def can_handle(self, handler_input):
-        # # type: (HandlerInput) -> bool
-        # return ask_utils.is_intent_name("HelloWorldIntent")(handler_input)
-
-    # def handle(self, handler_input):
-        # # type: (HandlerInput) -> Response
-        # speak_output = "Hello World!"
-
-        # return (
-            # handler_input.response_builder
-                # .speak(speak_output)
-                # # .ask("add a reprompt if you want to keep the session open for the user to respond")
-                # .response
-        # )
-
 class AskIndexIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
@@ -65,7 +48,7 @@ class AskIndexIntentHandler(AbstractRequestHandler):
         # type: (HandlerInput) -> Response
         quotation_index = handler_input.request_envelope.request.intent.slots["quotation"].value
         quotation_symbol = "EURBRL=X" if quotation_index == "euro" else "USDBRL=X"
-        result = yf.Ticker(quotation_symbol).info['regularMartketPrice']
+        result = str(yf.Ticker(quotation_symbol).info['regularMarketOpen'])
         speak_output = "The value of "+ quotation_index +" is "+ result +" real"
 
         return (
@@ -187,4 +170,5 @@ sb.add_request_handler(IntentReflectorHandler()) # make sure IntentReflectorHand
 
 sb.add_exception_handler(CatchAllExceptionHandler())
 
-lambda_handler = sb.lambda_handler()f
+lambda_handler = sb.lambda_handler()
+

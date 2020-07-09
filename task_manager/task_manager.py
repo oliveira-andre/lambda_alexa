@@ -6,4 +6,8 @@ rep = requests.get(
         headers=auth_header
         )
 
-print(rep.json())
+projects = rep.json()
+projects_count = len(projects)
+
+for project in projects:
+    print project['title']

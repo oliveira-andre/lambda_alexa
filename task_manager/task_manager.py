@@ -1,17 +1,3 @@
-import requests
-
-auth_header = { 'token': 'set_your_token' }
-rep = requests.get(
-        'http://localhost:3334/api/v1/projects',
-        headers=auth_header
-        )
-
-projects = rep.json()
-projects_count = len(projects)
-
-for project in projects:
-    print project['title']
-
 import logging
 import ask_sdk_core.utils as ask_utils
 
@@ -21,6 +7,8 @@ from ask_sdk_core.dispatch_components import AbstractExceptionHandler
 from ask_sdk_core.handler_input import HandlerInput
 
 from ask_sdk_model import Response
+
+import requests
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -35,7 +23,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Welcome, you can say Hello or Help. Which would you like to try?"
+        speak_output = ""
 
         return (
             handler_input.response_builder
@@ -54,17 +42,28 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speak_output = "Hello World!"
+        auth_header = { 'token': 'set_your_token' }
+        rep = requests.get(
+                'http://localhost:3334/api/v1/projects',
+                headers=auth_header
+                )
+
+        projects = rep.json()
+        projects_count = len(projects)
+
+        for project in projects:
+            print project['title']
 
         return (
-            handler_input.response_builder
+                handler_input.response_builder
                 .speak(speak_output)
                 # .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
-        )
+                )
 
 
-class HelpIntentHandler(AbstractRequestHandler):
-    """Handler for Help Intent."""
+        class HelpIntentHandler(AbstractRequestHandler):
+            """Handler for Help Intent."""
     def can_handle(self, handler_input):
         return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
 
@@ -72,29 +71,29 @@ class HelpIntentHandler(AbstractRequestHandler):
         speak_output = "You can say hello to me! How can I help?"
 
         return (
-            handler_input.response_builder
+                handler_input.response_builder
                 .speak(speak_output)
                 .ask(speak_output)
                 .response
-        )
+                )
 
 
-class CancelOrStopIntentHandler(AbstractRequestHandler):
-    """Single handler for Cancel and Stop Intent."""
+        class CancelOrStopIntentHandler(AbstractRequestHandler):
+            """Single handler for Cancel and Stop Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input) or
                 ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
 
-    def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
+        def handle(self, handler_input):
+            # type: (HandlerInput) -> Response
         speak_output = "Goodbye!"
 
         return (
-            handler_input.response_builder
+                handler_input.response_builder
                 .speak(speak_output)
                 .response
-        )
+                )
 
 
 class SessionEndedRequestHandler(AbstractRequestHandler):

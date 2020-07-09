@@ -15,12 +15,12 @@ logger.setLevel(logging.INFO)
 
 auth_header = { 'token': 'set_your_token' }
 rep = requests.get(
-    'http://localhost:3334/api/v1/projects',
+    'http://65a7d89fe265.ngrok.io/api/v1/projects',
     headers=auth_header
 )
 
 projects = rep.json()
-projects_count = len(projects)
+projects_count = str(len(projects))
 
 class LaunchRequestHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -40,7 +40,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
 class ProjectDetailsIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
-        return ask_utils.is_intent_name("ProjectDetailsIntent")(handler_input)
+        return ask_utils.is_intent_name("ProjectDetails")(handler_input)
 
     def handle(self, handler_input):
         project_names = ''
@@ -58,8 +58,8 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
                 )
 
 
-        class HelpIntentHandler(AbstractRequestHandler):
-            """Handler for Help Intent."""
+class HelpIntentHandler(AbstractRequestHandler):
+    """Handler for Help Intent."""
     def can_handle(self, handler_input):
         return ask_utils.is_intent_name("AMAZON.HelpIntent")(handler_input)
 
@@ -74,15 +74,15 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
                 )
 
 
-        class CancelOrStopIntentHandler(AbstractRequestHandler):
-            """Single handler for Cancel and Stop Intent."""
+class CancelOrStopIntentHandler(AbstractRequestHandler):
+    """Single handler for Cancel and Stop Intent."""
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
         return (ask_utils.is_intent_name("AMAZON.CancelIntent")(handler_input) or
                 ask_utils.is_intent_name("AMAZON.StopIntent")(handler_input))
 
-        def handle(self, handler_input):
-            # type: (HandlerInput) -> Response
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
         speak_output = "Goodbye!"
 
         return (
@@ -154,7 +154,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 sb = SkillBuilder()
 
 sb.add_request_handler(LaunchRequestHandler())
-sb.add_request_handler(ProjectDetailsntentHandler())
+sb.add_request_handler(ProjectDetailsIntentHandler())
 sb.add_request_handler(HelpIntentHandler())
 sb.add_request_handler(CancelOrStopIntentHandler())
 sb.add_request_handler(SessionEndedRequestHandler())

@@ -43,10 +43,12 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("ProjectDetailsIntent")(handler_input)
 
     def handle(self, handler_input):
-        speak_output = "Hello World!"
+        project_names = ''
 
         for project in projects:
-            print project['title']
+            project_names = project_names + project['title'] + ","
+
+        speak_output = "Your projects are " + project_names
 
         return (
                 handler_input.response_builder

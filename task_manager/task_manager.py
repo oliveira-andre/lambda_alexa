@@ -23,19 +23,17 @@ projects = rep.json()
 projects_count = len(projects)
 
 class LaunchRequestHandler(AbstractRequestHandler):
-    """Handler for Skill Launch."""
     def can_handle(self, handler_input):
 
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        speak_output = "Master, what you wanna know?"
-        speak_reprompt = "Master, if you wanna know about projects, say show projects"
+        speak_output = "Master, you have "+ projects_count +" active projects"
 
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                .ask(speak_reprompt)
+                .ask(speak_output)
                 .response
         )
 

@@ -17,30 +17,26 @@ logger.setLevel(logging.INFO)
 class LaunchRequestHandler(AbstractRequestHandler):
     """Handler for Skill Launch."""
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
 
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
-        speak_output = ""
+        speak_output = "Master, what you wanna know?"
+        speak_reprompt = "Master, if you wanna know about projects, say show projects"
 
         return (
             handler_input.response_builder
                 .speak(speak_output)
-                .ask(speak_output)
+                .ask(speak_reprompt)
                 .response
         )
 
 
 class ProjectDetailsIntentHandler(AbstractRequestHandler):
-    """Handler for Hello World Intent."""
     def can_handle(self, handler_input):
-        # type: (HandlerInput) -> bool
         return ask_utils.is_intent_name("ProjectDetailsIntent")(handler_input)
 
     def handle(self, handler_input):
-        # type: (HandlerInput) -> Response
         speak_output = "Hello World!"
         auth_header = { 'token': 'set_your_token' }
         rep = requests.get(

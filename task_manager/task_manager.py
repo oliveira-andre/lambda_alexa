@@ -15,7 +15,7 @@ logger.setLevel(logging.INFO)
 
 auth_header = { 'token': 'set_your_token' }
 rep = requests.get(
-    'http://65a7d89fe265.ngrok.io/api/v1/projects',
+    'http://65a7d89fe265.ngrok.io/api/v1/alexa/project_manager/skills',
     headers=auth_header
 )
 

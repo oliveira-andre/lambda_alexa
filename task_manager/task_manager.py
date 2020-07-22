@@ -14,13 +14,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 auth_header = { 'token': 'set_your_token' }
-rep = requests.get(
-    'http://65a7d89fe265.ngrok.io/api/v1/alexa/project_manager/skills',
-    headers=auth_header
-)
-
-projects = rep.json()
-projects_count = str(len(projects))
 
 class LaunchRequestHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
@@ -28,6 +21,13 @@ class LaunchRequestHandler(AbstractRequestHandler):
         return ask_utils.is_request_type("LaunchRequest")(handler_input)
 
     def handle(self, handler_input):
+        rep = requests.get(
+            'http://812984710de1.ngrok.io/api/v1/alexa/project_manager/skills',
+            headers=auth_header
+        )
+
+        projects = rep.json()
+        projects_count = str(len(projects))
         speak_output = "Master, you have "+ projects_count +" active projects"
 
         return (
@@ -43,14 +43,27 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("ProjectDetails")(handler_input)
 
     def handle(self, handler_input):
-        speak_output = ''
+        rep = requests.get(
+            'http://812984710de1.ngrok.io/api/v1/alexa/project_manager/skills',
+            headers=auth_header
+        )
+
+        projects = rep.json()
+        
+        message = ''
 
         for project in projects:
-            speak_output = (
-                "The project " + project['title'] + " has the following tasks: " +
-                taskDetails(project['tasks']) + ". "
+            task_names = ''
+
+            for task in project['tasks']:
+                task_names = task_names + task['title'] + ', '
+
+            message = (
+                message + " The project " + project['title'] + " has the following tasks: " +
+                task_names + "."
             )
 
+        speak_output = message
 
         return (
                 handler_input.response_builder
@@ -58,14 +71,6 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
                 # .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
                 )
-
-        def taskDetails(tasks):
-            task_names = ''
-
-            for task in tasks:
-                task_names = task_names + task['title'] + ', '
-
-            return task_names
 
 
 class HelpIntentHandler(AbstractRequestHandler):

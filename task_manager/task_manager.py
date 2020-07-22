@@ -43,12 +43,14 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
         return ask_utils.is_intent_name("ProjectDetails")(handler_input)
 
     def handle(self, handler_input):
-        project_names = ''
+        speak_output = ''
 
         for project in projects:
-            project_names = project_names + project['title'] + ","
+            speak_output = (
+                "The project " + project['title'] + " has the following tasks: " +
+                taskDetails(project['tasks']) + ". "
+            )
 
-        speak_output = "Your projects are " + project_names
 
         return (
                 handler_input.response_builder
@@ -56,6 +58,14 @@ class ProjectDetailsIntentHandler(AbstractRequestHandler):
                 # .ask("add a reprompt if you want to keep the session open for the user to respond")
                 .response
                 )
+
+        def taskDetails(tasks):
+            task_names = ''
+
+            for task in tasks:
+                task_names = task_names + task['title'] + ', '
+
+            return task_names
 
 
 class HelpIntentHandler(AbstractRequestHandler):

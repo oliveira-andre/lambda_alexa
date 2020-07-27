@@ -8,6 +8,8 @@ from ask_sdk_core.handler_input import HandlerInput
 
 from ask_sdk_model import Response
 
+import requests
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -21,7 +23,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Welcome, you can say Hello or Help. Which would you like to try?"
+        speak_output = "Hi, what the name of product that you like to search?"
 
         return (
             handler_input.response_builder
@@ -39,7 +41,9 @@ class SearchProductIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        speak_output = "Hello World!"
+        product = handler_input.request_envelope.request.intent.slots["product"].value.split()[1]
+        speak_output = "searching by product " + product
+
 
         return (
             handler_input.response_builder

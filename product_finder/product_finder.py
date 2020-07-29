@@ -42,7 +42,7 @@ class SearchProductIntentHandler(AbstractRequestHandler):
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         product_name = handler_input.request_envelope.request.intent.slots["product"].value.split()[1]
-        uri = 'http://f316d32881b2.ngrok.io/api/v1/alexa/search_product/skills?query=' + product_name
+        uri = 'http://f316d32881b2.ngrok.io/api/v1/alexa/product_finder/skills?query=' + product_name
         response = requests.get(uri)
         if response.status_code != 200:
             message = "sorry, i'm having some trouble, please try later"

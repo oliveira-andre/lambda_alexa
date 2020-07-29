@@ -41,8 +41,33 @@ class SearchProductIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        product = handler_input.request_envelope.request.intent.slots["product"].value.split()[1]
-        speak_output = "searching by product " + product
+        product_name = handler_input.request_envelope.request.intent.slots["product"].value.split()[1]
+        uri = 'http://f316d32881b2.ngrok.io/api/v1/alexa/search_product/skills?query=' + product_name
+        response = requests.get(uri)
+        if response.status_code != 200:
+            message = "sorry, i'm having some trouble, please try later"
+            return (
+                handler_input.response_builder
+                    .speak(message)
+                    # .ask("add a reprompt if you want to keep the session open for the user to respond")
+                    .response
+            )
+
+        products = response.json()['products']
+        if not products:
+            message = "sorry, i can't find anything usingo your search, please try to be more clear on your product name"
+            return (
+                handler_input.response_builder
+                    .speak(message)
+                    # .ask("add a reprompt if you want to keep the session open for the user to respond")
+                    .response
+            )
+
+        message = 'i found the following products on your search: '
+        for product in products:
+            message = message + product['name'] + ' by ' + product['price']
+
+        speak_output = message
 
 
         return (

@@ -63,7 +63,7 @@ class SearchProductIntentHandler(AbstractRequestHandler):
                     .response
             )
 
-        message = 'on the olx i found the following products: '
+        message = 'on the OLX i found the following products: '
         for product in products:
             message = message + product['name'] + ' by ' + product['price'] + ', '
 

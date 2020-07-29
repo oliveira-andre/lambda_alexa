@@ -63,9 +63,9 @@ class SearchProductIntentHandler(AbstractRequestHandler):
                     .response
             )
 
-        message = 'i found the following products on your search: '
+        message = 'on the olx i found the following products: '
         for product in products:
-            message = message + product['name'] + ' by ' + product['price']
+            message = message + product['name'] + ' by ' + product['price'] + ', '
 
         speak_output = message
 

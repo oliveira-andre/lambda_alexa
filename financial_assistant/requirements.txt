@@ -24,4 +24,4 @@ urllib3==1.25.9
 virtualenv==20.0.18
 yfinance==0.1.54
 zipp==1.2.0
-lxml==4.5.1
+lxml==4.6.2

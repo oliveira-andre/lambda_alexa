@@ -20,7 +20,7 @@ requests==2.24.0
 scandir==1.10.0
 singledispatch==3.4.0.3
 six==1.14.0
-urllib3==1.25.9
+urllib3==1.26.5
 virtualenv==20.0.18
 yfinance==0.1.54
 zipp==1.2.0
